@@ -48,9 +48,28 @@ const updateACarFromDb = async (id: string, payload: ICar) => {
 }
 
 
+// delete a car by _id service
+const deleteACarFromDb = async (id: string) => {
+
+    // check if car exist
+    const isExist = await Car.findById(id);
+
+    // if not exist throw error
+    if (!isExist) {
+        throw new AppError(httpStatus.NOT_FOUND, "Car not found");
+    }
+
+    // soft delete a car by _id
+    const car = await Car.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+
+    return car;
+}
+
+
 export const carService = {
     createCarIntoDb,
     getAllCarsFromDb,
     getACarFromDb,
-    updateACarFromDb
+    updateACarFromDb,
+    deleteACarFromDb
 }

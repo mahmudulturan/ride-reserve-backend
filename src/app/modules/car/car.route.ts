@@ -17,4 +17,7 @@ router.get('/:id', carController.getACar);
 // router for update a car
 router.put('/:id', carController.updateACar);
 
+// router for delete a car
+router.delete('/:id', carController.deleteACar);
+
 export const carRoutes = router;
