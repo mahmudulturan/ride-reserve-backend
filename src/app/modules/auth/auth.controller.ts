@@ -1,15 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import { authService } from "./auth.service";
 import httpStatus from "http-status";
+import sendResponse from "../../utils/sendResponse";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await authService.createUserIntoDB(req.body);
-        res.status(httpStatus.CREATED).send({
-            success: true,
-            message: "User registered successfully",
-            data: result
-        });
+
+        sendResponse(res,
+            {
+                status: httpStatus.CREATED,
+                success: true,
+                message: "User created successfully",
+                result
+            })
     } catch (error) {
         next(error);
     }
@@ -18,11 +22,14 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await authService.loginUser(req.body);
-        res.status(httpStatus.OK).send({
-            success: true,
-            message: "User logged in successfully",
-            data: result
-        });
+
+        sendResponse(res,
+            {
+                status: httpStatus.OK,
+                success: true,
+                message: "User logged in successfully",
+                result
+            });
     } catch (error) {
         next(error);
     }
