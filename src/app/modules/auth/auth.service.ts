@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 import { IUser } from "../user/user.interface";
 import User from "../user/user.model";
 import { ILoginInfo } from "./auth.interface";
@@ -5,6 +7,13 @@ import bcrypt from 'bcrypt';
 
 // create user service
 const createUserIntoDB = async (payload: IUser) => {
+
+    const isUserExist = await User.findOne({ email: payload.email });
+
+    // if user already exist throw error
+    if (isUserExist) {
+        throw new AppError(httpStatus.CONFLICT, "User already exist");
+    }
 
     const user = await User.create(payload);
 
