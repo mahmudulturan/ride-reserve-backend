@@ -28,7 +28,7 @@ const loginUser = async (payload: ILoginInfo) => {
 
     // if user not found throw error
     if (!user) {
-        throw new Error("User not found");
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
     }
 
     // compare with the hashed password
@@ -36,7 +36,7 @@ const loginUser = async (payload: ILoginInfo) => {
 
     // if password not match throw error
     if (!isPasswordMatch) {
-        throw new Error("Incorrect password");
+        throw new AppError(httpStatus.UNAUTHORIZED, "Incorrect password");
     }
 
     return user;

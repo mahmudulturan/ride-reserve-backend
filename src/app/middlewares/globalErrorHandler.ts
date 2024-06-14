@@ -8,7 +8,8 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         success: false,
         message,
         errorMessage: [],
-        stack: null
+        stack: null,
+        err
     })
 }
 

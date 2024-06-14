@@ -5,14 +5,16 @@ import sendResponse from "../../utils/sendResponse";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // create user
         const result = await authService.createUserIntoDB(req.body);
 
+        // send response
         sendResponse(res,
             {
                 status: httpStatus.CREATED,
                 success: true,
                 message: "User created successfully",
-                result
+                result: result
             })
     } catch (error) {
         next(error);
@@ -21,8 +23,10 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // login user
         const result = await authService.loginUser(req.body);
 
+        // send response
         sendResponse(res,
             {
                 status: httpStatus.OK,
