@@ -51,9 +51,25 @@ const getACar = catchAsync(async (req: Request, res: Response) => {
         })
 })
 
+// controller for update a car
+const updateACar = catchAsync(async (req: Request, res: Response) => {
+    // update a car by _id
+    const result = await carService.updateACarFromDb(req.params.id, req.body);
+
+    // send response
+    sendResponse(res,
+        {
+            status: httpStatus.OK,
+            success: true,
+            message: "Car updated successfully",
+            result: result
+        })
+})
+
 
 export const carController = {
     createCar,
     getAllCars,
-    getACar
+    getACar,
+    updateACar
 };
