@@ -10,8 +10,17 @@ const createCarIntoDb = async (payload: ICar) => {
     return car;
 }
 
+// get all cars service
+const getAllCarsFromDb = async () => {
+    // get all cars
+    const cars = await Car.find();
+
+    return cars;
+}
+
 
 
 export const carService = {
-    createCarIntoDb
+    createCarIntoDb,
+    getAllCarsFromDb
 }

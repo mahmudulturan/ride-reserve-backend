@@ -4,6 +4,7 @@ import sendResponse from "../../utils/sendResponse";
 import { carService } from "./car.service";
 import httpStatus from "http-status";
 
+// controller for create car
 const createCar = catchAsync(async (req: Request, res: Response) => {
     // create car
     const result = await carService.createCarIntoDb(req.body);
@@ -19,6 +20,23 @@ const createCar = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+// controller for get all cars
+const getAllCars = catchAsync(async (req: Request, res: Response) => {
+    // get all cars
+    const result = await carService.getAllCarsFromDb();
+
+    // send response
+    sendResponse(res,
+        {
+            status: httpStatus.OK,
+            success: true,
+            message: "Cars retrieved successfully",
+            result: result
+        })
+})
+
+
 export const carController = {
-    createCar
+    createCar,
+    getAllCars
 };

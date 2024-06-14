@@ -5,6 +5,10 @@ import { carValidation } from "./car.validation";
 
 const router = Router();
 
+// route for create car
 router.post('/', requestValidation(carValidation.createCarValidationSchema), carController.createCar);
+
+// router for get all cars
+router.get('/', carController.getAllCars);
 
 export const carRoutes = router;
