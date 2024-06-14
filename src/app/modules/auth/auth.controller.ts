@@ -15,6 +15,20 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await authService.loginUser(req.body);
+        res.status(httpStatus.OK).send({
+            success: true,
+            message: "User logged in successfully",
+            data: result
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 export const authController = {
-    createUser
+    createUser,
+    loginUser
 }
