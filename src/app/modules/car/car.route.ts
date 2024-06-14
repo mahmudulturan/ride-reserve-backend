@@ -11,4 +11,7 @@ router.post('/', requestValidation(carValidation.createCarValidationSchema), car
 // router for get all cars
 router.get('/', carController.getAllCars);
 
+// router for get a car
+router.get('/:id', carController.getACar);
+
 export const carRoutes = router;
