@@ -5,6 +5,7 @@ import { TErrorSources } from "../interfaces/error";
 import configs from "../configs";
 import handleValidationError from "../errors/handleValidationError";
 import handleDuplicateError from "../errors/handleDuplicatError";
+import handleCastError from "../errors/handleCastError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
@@ -33,6 +34,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         status = simplifiedDuplicateError?.statusCode;
         message = simplifiedDuplicateError?.message;
         errorMessages = simplifiedDuplicateError?.errorSources;
+    } else if (err.name === "CastError") {
+        const simplifiedCastError = handleCastError(err);
+        status = simplifiedCastError?.statusCode;
+        message = simplifiedCastError?.message;
+        errorMessages = simplifiedCastError?.errorSources;
     }
 
     res.status(status).send({
