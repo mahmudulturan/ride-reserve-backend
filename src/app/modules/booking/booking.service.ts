@@ -30,10 +30,7 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
 // create booking service
 const createBookingIntoDb = async (payload: IBooking) => {
 
-    // const session = await mongoose.startSession();
-
-    // try {
-    // session.startTransaction();
+    const session = await mongoose.startSession();
 
     const isAvailable = await Car.findById(payload.car);
 
@@ -41,24 +38,31 @@ const createBookingIntoDb = async (payload: IBooking) => {
         throw new AppError(httpStatus.NOT_FOUND, "Car is unavailable");
     }
 
-    const car = await Car.findByIdAndUpdate(payload.car, { status: "unavailable" }, { new: true });
-
-    if (!car) {
+    if (!isAvailable) {
         throw new AppError(httpStatus.NOT_FOUND, "Car Not Found");
     }
 
-    const newBooking = (await (await Booking.create(payload)).populate("car")).populate("user");
+    try {
+        session.startTransaction();
 
 
-    // await session.commitTransaction();
-    // await session.endSession();
-    return newBooking;
-    // } catch (error) {
-    //     // await session.abortTransaction();
-    //     // await session.endSession();
-    //     throw new AppError(httpStatus.BAD_REQUEST, "Booking Failed");
-    // }
 
+        isAvailable.status = "unavailable"
+
+        await isAvailable.save({ session });
+
+
+        const newBooking = await Booking.create([payload], { session });
+
+
+        await session.commitTransaction();
+        await session.endSession();
+        return newBooking;
+    } catch (error) {
+        await session.abortTransaction();
+        await session.endSession();
+        throw new AppError(httpStatus.BAD_REQUEST, "Booking Failed");
+    }
 
 }
 
