@@ -17,7 +17,7 @@ const createCarIntoDb = async (payload: ICar) => {
 // get all cars service
 const getAllCarsFromDb = async () => {
     // get all cars
-    const cars = await Car.find();
+    const cars = await Car.find({ isDeleted: false });
 
     return cars;
 }
