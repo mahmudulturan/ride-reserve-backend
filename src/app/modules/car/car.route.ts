@@ -21,4 +21,7 @@ router.put('/:id', carController.updateACar);
 // router for delete a car
 router.delete('/:id', carController.deleteACar);
 
+// router for return a car
+router.put('/car/return', carController.returnCar);
+
 export const carRoutes = router;

@@ -7,7 +7,7 @@ import httpStatus from "http-status";
 // controller for create car
 const createCar = catchAsync(async (req: Request, res: Response) => {
     // create car
-    const result = await carService.createCarIntoDb(req.body);
+    const data = await carService.createCarIntoDb(req.body);
 
     // send response
     sendResponse(res,
@@ -15,7 +15,7 @@ const createCar = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.CREATED,
             success: true,
             message: "Car created successfully",
-            result: result
+            data
         })
 })
 
@@ -23,7 +23,7 @@ const createCar = catchAsync(async (req: Request, res: Response) => {
 // controller for get all cars
 const getAllCars = catchAsync(async (req: Request, res: Response) => {
     // get all cars
-    const result = await carService.getAllCarsFromDb();
+    const data = await carService.getAllCarsFromDb();
 
     // send response
     sendResponse(res,
@@ -31,7 +31,7 @@ const getAllCars = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.OK,
             success: true,
             message: "Cars retrieved successfully",
-            result: result
+            data
         })
 })
 
@@ -39,7 +39,7 @@ const getAllCars = catchAsync(async (req: Request, res: Response) => {
 // controller for get a car
 const getACar = catchAsync(async (req: Request, res: Response) => {
     // get a car by _id
-    const result = await carService.getACarFromDb(req.params.id);
+    const data = await carService.getACarFromDb(req.params.id);
 
     // send response
     sendResponse(res,
@@ -47,14 +47,14 @@ const getACar = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.OK,
             success: true,
             message: "A Car retrieved successfully",
-            result: result
+            data
         })
 })
 
 // controller for update a car
 const updateACar = catchAsync(async (req: Request, res: Response) => {
     // update a car by _id
-    const result = await carService.updateACarFromDb(req.params.id, req.body);
+    const data = await carService.updateACarFromDb(req.params.id, req.body);
 
     // send response
     sendResponse(res,
@@ -62,7 +62,7 @@ const updateACar = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.OK,
             success: true,
             message: "Car updated successfully",
-            result: result
+            data
         })
 })
 
@@ -70,7 +70,7 @@ const updateACar = catchAsync(async (req: Request, res: Response) => {
 // controller for delete a car
 const deleteACar = catchAsync(async (req: Request, res: Response) => {
     // delete a car by _id
-    const result = await carService.deleteACarFromDb(req.params.id);
+    const data = await carService.deleteACarFromDb(req.params.id);
 
     // send response
     sendResponse(res,
@@ -78,9 +78,19 @@ const deleteACar = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.OK,
             success: true,
             message: "Car Deleted successfully",
-            result: result
+            data
         });
 });
+
+// controller for return car
+const returnCar = catchAsync(async (req: Request, res: Response) => {
+
+    console.log('firstName')
+    // response data
+    const data = await carService.returnCarWithDb(req.body);
+    sendResponse(res, { success: true, status: httpStatus.OK, message: "Car returned successfully", data })
+})
+
 
 
 export const carController = {
@@ -88,5 +98,6 @@ export const carController = {
     getAllCars,
     getACar,
     updateACar,
-    deleteACar
+    deleteACar,
+    returnCar
 };

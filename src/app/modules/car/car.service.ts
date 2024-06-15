@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { ICar } from "./car.interface";
 import Car from "./car.model";
+import Booking from "../booking/booking.model";
 
 // create car service
 const createCarIntoDb = async (payload: ICar) => {
@@ -66,10 +67,47 @@ const deleteACarFromDb = async (id: string) => {
 }
 
 
+const returnCarWithDb = async (payload: { bookingId: string, endTime: string }) => {
+
+    // find booking by booking id
+    const booking = await Booking.findById(payload.bookingId);
+
+    // check if booking exist
+    if (!booking) {
+        throw new AppError(httpStatus.NOT_FOUND, "Booking not found");
+    }
+
+    // find car by car id
+    const car = await Car.findById(booking.car);
+
+    // check if car exist
+    if (!car) {
+        throw new AppError(httpStatus.NOT_FOUND, "Car not found");
+    }
+
+    // calculate total hours
+    const totalHours = Number(payload.endTime.split(":")[0]) - Number(booking.startTime.split(":")[0]);
+
+    // calculate total cost
+    const totalCost = totalHours * car.pricePerHour;
+
+    // change car status
+    car.status = 'available';
+    await car.save();
+
+    // update booking endTime and totalCost
+    const result = await Booking.findByIdAndUpdate(payload.bookingId, { endTime: payload.endTime, totalCost }, { new: true }).populate("car").populate('user');
+
+    return result;
+}
+
+
+
 export const carService = {
     createCarIntoDb,
     getAllCarsFromDb,
     getACarFromDb,
     updateACarFromDb,
-    deleteACarFromDb
+    deleteACarFromDb,
+    returnCarWithDb
 }
