@@ -2,9 +2,9 @@ import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import handleZodError from "../errors/handleZodError";
 import { TErrorSources } from "../interfaces/error";
-import { MongooseError } from "mongoose";
 import configs from "../configs";
 import handleValidationError from "../errors/handleValidationError";
+import handleDuplicateError from "../errors/handleDuplicatError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
@@ -28,6 +28,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         errorMessages = simplifiedMongooseError.errorSources;
         status = simplifiedMongooseError.statusCode;
         message = simplifiedMongooseError.message;
+    } else if (err.code === 11000) {
+        const simplifiedDuplicateError = handleDuplicateError(err);
+        status = simplifiedDuplicateError?.statusCode;
+        message = simplifiedDuplicateError?.message;
+        errorMessages = simplifiedDuplicateError?.errorSources;
     }
 
     res.status(status).send({
