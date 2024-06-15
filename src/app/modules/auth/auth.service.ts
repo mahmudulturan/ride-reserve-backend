@@ -26,7 +26,7 @@ const createUserIntoDB = async (payload: IUser) => {
 // login user service
 const loginUser = async (payload: ILoginInfo) => {
 
-    const user = await User.findOne({ email: payload.email });
+    const user = await User.findOne({ email: payload.email }).select('+password');
 
     // if user not found throw error
     if (!user) {
@@ -48,8 +48,10 @@ const loginUser = async (payload: ILoginInfo) => {
     // generate refresh token
     const refreshToken = generateJwtToken({ userId: String(user._id), role: user.role }, configs.refresh_token_secret as string, '180d');
 
+    const userWithoutPassword = await User.findOne({ email: payload.email });
 
-    return { user, accessToken, refreshToken };
+
+    return { user: userWithoutPassword, accessToken, refreshToken };
 }
 
 

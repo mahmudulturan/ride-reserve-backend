@@ -7,7 +7,7 @@ import configs from "../../configs";
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
     // create user
-    const result = await authService.createUserIntoDB(req.body);
+    const data = await authService.createUserIntoDB(req.body);
 
     // send response
     sendResponse(res,
@@ -15,7 +15,7 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.CREATED,
             success: true,
             message: "User created successfully",
-            result: result
+            data
         })
 
 })
