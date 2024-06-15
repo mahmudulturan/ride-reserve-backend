@@ -30,7 +30,19 @@ const createBookingIntoDb = async (payload: IBooking) => {
 }
 
 
+
+// get my bookings service
+const getMyBookingsFromDB = async (userId: string) => {
+    console.log(userId)
+    // get my bookings by user id
+    const bookings = await Booking.find({ user: userId });
+    return bookings;
+}
+
+
+
 export const bookingService = {
     createBookingIntoDb,
-    getBookingsFromDb
+    getBookingsFromDb,
+    getMyBookingsFromDB
 }

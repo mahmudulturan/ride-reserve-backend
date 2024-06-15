@@ -9,7 +9,6 @@ import User from "../modules/user/user.model";
 type TRole = 'user' | 'admin';
 
 const verifyToken = (...role: TRole[]) => {
-    console.log(role);
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.split(' ')[1];
 
