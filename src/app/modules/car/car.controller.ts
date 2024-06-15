@@ -3,6 +3,7 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { carService } from "./car.service";
 import httpStatus from "http-status";
+import AppError from "../../errors/AppError";
 
 // controller for create car
 const createCar = catchAsync(async (req: Request, res: Response) => {
@@ -24,6 +25,18 @@ const createCar = catchAsync(async (req: Request, res: Response) => {
 const getAllCars = catchAsync(async (req: Request, res: Response) => {
     // get all cars
     const data = await carService.getAllCarsFromDb();
+    
+    // if no data found then send error response
+    if (data.length === 0) {
+        // send response
+        sendResponse(res,
+            {
+                status: httpStatus.NOT_FOUND,
+                success: true,
+                message: "No Data Found",
+                data
+            })
+    }
 
     // send response
     sendResponse(res,
@@ -40,6 +53,18 @@ const getAllCars = catchAsync(async (req: Request, res: Response) => {
 const getACar = catchAsync(async (req: Request, res: Response) => {
     // get a car by _id
     const data = await carService.getACarFromDb(req.params.id);
+
+    // if no data found then send error response
+    if (!data) {
+        // send response
+        sendResponse(res,
+            {
+                status: httpStatus.NOT_FOUND,
+                success: true,
+                message: "No Data Found",
+                data
+            })
+    }
 
     // send response
     sendResponse(res,
@@ -85,7 +110,6 @@ const deleteACar = catchAsync(async (req: Request, res: Response) => {
 // controller for return car
 const returnCar = catchAsync(async (req: Request, res: Response) => {
 
-    console.log('firstName')
     // response data
     const data = await carService.returnCarWithDb(req.body);
     sendResponse(res, { success: true, status: httpStatus.OK, message: "Car returned successfully", data })

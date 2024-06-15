@@ -8,7 +8,7 @@ import User from "../modules/user/user.model";
 
 type TRole = 'user' | 'admin';
 
-const verifyToken = (...role: TRole[]) => {
+const verifyToken = (...requiredRole: TRole[]) => {
     return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.split(' ')[1];
 
@@ -26,11 +26,10 @@ const verifyToken = (...role: TRole[]) => {
             if (!user) {
                 throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
             }
-
-            const isMatchedRole = role.includes(role);
+            const isMatchedRole = requiredRole.includes(role);
 
             if (!isMatchedRole) {
-                throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
+                throw new AppError(httpStatus.UNAUTHORIZED, "You have no access to this route");
             };
 
             req.user = decoded as JwtPayload;

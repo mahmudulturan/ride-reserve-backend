@@ -17,8 +17,9 @@ const createUserIntoDB = async (payload: IUser) => {
         throw new AppError(httpStatus.CONFLICT, "User already exist");
     }
 
-    const user = await User.create(payload);
+    await User.create(payload);
 
+    const user = await User.findOne({ email: payload.email });
     return user;
 }
 

@@ -26,7 +26,7 @@ const getAllCarsFromDb = async () => {
 const getACarFromDb = async (id: string) => {
     // get a car
     const car = await Car.findById(id);
-
+    
     return car;
 }
 

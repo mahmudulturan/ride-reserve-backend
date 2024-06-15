@@ -10,20 +10,20 @@ const router = Router();
 router.post('/', verifyToken("admin"), requestValidation(carValidation.createCarValidationSchema), carController.createCar);
 
 // router for get all cars
-router.get('/', carController.getAllCars);
+router.get('/', verifyToken("user", "admin"), carController.getAllCars);
 
 // router for get a car
-router.get('/:id', carController.getACar);
+router.get('/:id', verifyToken("user", "admin"), carController.getACar);
 
 
 // router for return a car
-router.put('/return', carController.returnCar);
+router.put('/return', verifyToken("admin"), carController.returnCar);
 
 // router for update a car
-router.put('/:id', carController.updateACar);
+router.put('/:id', verifyToken("admin"), carController.updateACar);
 
 // router for delete a car
-router.delete('/:id', carController.deleteACar);
+router.delete('/:id', verifyToken("admin"), carController.deleteACar);
 
 
 export const carRoutes = router;
