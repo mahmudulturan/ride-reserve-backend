@@ -4,6 +4,8 @@ import { IUser } from "../user/user.interface";
 import User from "../user/user.model";
 import { ILoginInfo } from "./auth.interface";
 import bcrypt from 'bcrypt';
+import configs from "../../configs";
+import { generateJwtToken } from "./auth.utils";
 
 // create user service
 const createUserIntoDB = async (payload: IUser) => {
@@ -39,7 +41,15 @@ const loginUser = async (payload: ILoginInfo) => {
         throw new AppError(httpStatus.UNAUTHORIZED, "Incorrect password");
     }
 
-    return user;
+
+    // generate access token
+    const accessToken = generateJwtToken({ userId: String(user._id), role: user.role }, configs.access_token_secret as string, '1d');
+
+    // generate refresh token
+    const refreshToken = generateJwtToken({ userId: String(user._id), role: user.role }, configs.refresh_token_secret as string, '180d');
+
+
+    return { user, accessToken, refreshToken };
 }
 
 
