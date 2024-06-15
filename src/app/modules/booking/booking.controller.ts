@@ -8,9 +8,9 @@ import httpStatus from "http-status";
 const getAllBookings = catchAsync(async (req: Request, res: Response) => {
 
     // response data
-    const data = await bookingService.getBookingsFromDb();
+    const data = await bookingService.getBookingsFromDb(req.query);
 
-    sendResponse(res, { success: true, status: httpStatus.ACCEPTED, message: "Bookings retrieved successfully", data })
+    sendResponse(res, { success: true, status: httpStatus.OK, message: "Bookings retrieved successfully", data })
 })
 
 
