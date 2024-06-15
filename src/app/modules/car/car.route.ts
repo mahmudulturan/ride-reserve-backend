@@ -8,7 +8,7 @@ const router = Router();
 
 // route for create car
 router.post('/', verifyToken("admin"),
-//  requestValidation(carValidation.createCarValidationSchema),
+  requestValidation(carValidation.createCarValidationSchema),
   carController.createCar);
 
 // router for get all cars
