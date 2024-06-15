@@ -15,13 +15,15 @@ router.get('/', carController.getAllCars);
 // router for get a car
 router.get('/:id', carController.getACar);
 
+
+// router for return a car
+router.put('/return', carController.returnCar);
+
 // router for update a car
 router.put('/:id', carController.updateACar);
 
 // router for delete a car
 router.delete('/:id', carController.deleteACar);
 
-// router for return a car
-router.put('/car/return', carController.returnCar);
 
 export const carRoutes = router;
