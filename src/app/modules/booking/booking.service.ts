@@ -32,27 +32,32 @@ const createBookingIntoDb = async (payload: IBooking) => {
 
     // const session = await mongoose.startSession();
 
-    try {
-        // session.startTransaction();
+    // try {
+    // session.startTransaction();
 
-        const car = await Car.findByIdAndUpdate(payload.car, { status: "unavailable" }, { new: true });
+    const isAvailable = await Car.findById(payload.car);
 
-        if (!car) {
-            throw new AppError(httpStatus.NOT_FOUND, "Car Not Found");
-        }
-
-        const newBooking = await Booking.create(payload);
-
-        console.log(newBooking);
-
-        // await session.commitTransaction();
-        // await session.endSession();
-        return newBooking;
-    } catch (error) {
-        // await session.abortTransaction();
-        // await session.endSession();
-        throw new AppError(httpStatus.BAD_REQUEST, "Booking Failed");
+    if (isAvailable?.status == "unavailable") {
+        throw new AppError(httpStatus.NOT_FOUND, "Car is unavailable");
     }
+
+    const car = await Car.findByIdAndUpdate(payload.car, { status: "unavailable" }, { new: true });
+
+    if (!car) {
+        throw new AppError(httpStatus.NOT_FOUND, "Car Not Found");
+    }
+
+    const newBooking = (await (await Booking.create(payload)).populate("car")).populate("user");
+
+
+    // await session.commitTransaction();
+    // await session.endSession();
+    return newBooking;
+    // } catch (error) {
+    //     // await session.abortTransaction();
+    //     // await session.endSession();
+    //     throw new AppError(httpStatus.BAD_REQUEST, "Booking Failed");
+    // }
 
 
 }

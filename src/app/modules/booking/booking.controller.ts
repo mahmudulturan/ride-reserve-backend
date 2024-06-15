@@ -10,6 +10,19 @@ const getAllBookings = catchAsync(async (req: Request, res: Response) => {
     // response data
     const data = await bookingService.getBookingsFromDb(req.query);
 
+    // if no data found then send error response
+    if (data.length === 0) {
+        // send response
+        sendResponse(res,
+            {
+                status: httpStatus.NOT_FOUND,
+                success: true,
+                message: "No Data Found",
+                data
+            })
+    }
+
+
     sendResponse(res, { success: true, status: httpStatus.OK, message: "Bookings retrieved successfully", data })
 })
 
@@ -34,6 +47,19 @@ const getMyBookings = catchAsync(async (req: Request, res: Response) => {
 
     // response data
     const data = await bookingService.getMyBookingsFromDB(req.user.userId);
+
+    // if no data found then send error response
+    if (data.length === 0) {
+        // send response
+        sendResponse(res,
+            {
+                status: httpStatus.NOT_FOUND,
+                success: true,
+                message: "No Data Found",
+                data
+            })
+    }
+
 
     sendResponse(res, { success: true, status: httpStatus.OK, message: "My Bookings retrieved successfully", data })
 })

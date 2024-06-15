@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface IBooking {
-    date: Date;
+    date: string;
     user: Types.ObjectId;
     car: Types.ObjectId;
     startTime: string;
