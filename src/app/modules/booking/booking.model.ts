@@ -22,11 +22,11 @@ const bookingSchema = new mongoose.Schema<IBooking>({
     },
     endTime: {
         type: String,
-        required: true
+        default: null
     },
     totalCost: {
         type: Number,
-        required: true
+        default: 0
     }
 })
 
