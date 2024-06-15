@@ -7,7 +7,9 @@ import verifyToken from "../../middlewares/verifyToken";
 const router = Router();
 
 // route for create car
-router.post('/', verifyToken("admin"), requestValidation(carValidation.createCarValidationSchema), carController.createCar);
+router.post('/', verifyToken("admin"),
+//  requestValidation(carValidation.createCarValidationSchema),
+  carController.createCar);
 
 // router for get all cars
 router.get('/', verifyToken("user", "admin"), carController.getAllCars);

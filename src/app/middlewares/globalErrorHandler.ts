@@ -4,6 +4,7 @@ import handleZodError from "../errors/handleZodError";
 import { TErrorSources } from "../interfaces/error";
 import { MongooseError } from "mongoose";
 import configs from "../configs";
+import handleValidationError from "../errors/handleValidationError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
@@ -22,8 +23,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         errorMessages = simplifiedZodError.errorSources;
         status = simplifiedZodError.statusCode;
         message = simplifiedZodError.message;
-    } else if (err instanceof MongooseError) {
-        console.log('orree eda tw mongoose er error')
+    } else if (err.name === 'ValidationError') {
+        const simplifiedMongooseError = handleValidationError(err);
+        errorMessages = simplifiedMongooseError.errorSources;
+        status = simplifiedMongooseError.statusCode;
+        message = simplifiedMongooseError.message;
     }
 
     res.status(status).send({
@@ -31,6 +35,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         message,
         errorMessages,
         stack: configs.node_env === "development" ? err.stack : null,
+        err
     })
 }
 
