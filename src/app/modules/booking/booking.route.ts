@@ -7,7 +7,7 @@ import { bookingValidation } from "./booking.validation";
 const router = Router();
 
 // routes for get all bookings
-router.get('/', verifyToken("admin"), requestValidation(bookingValidation.createBookingValidationSchema), bookingController.createBooking);
+router.get('/', verifyToken("admin"), bookingController.getAllBookings);
 
 // routes for create a booking
 router.post('/', verifyToken("user"), requestValidation(bookingValidation.createBookingValidationSchema), bookingController.createBooking);
