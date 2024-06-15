@@ -23,7 +23,7 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
     };
 
     // get all bookings by queyObject
-    const bookings = await Booking.find(queryObject);
+    const bookings = await Booking.find(queryObject).populate("user").populate("car");
     return bookings;
 }
 
@@ -31,7 +31,7 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
 const createBookingIntoDb = async (payload: IBooking) => {
 
 
-    const car = await Car.findById(payload.car);
+    const car = await Car.findOne({ _id: payload.car, isDeleted: false });
 
     // if car not available then throw an error
     if (!car) {
@@ -62,7 +62,10 @@ const createBookingIntoDb = async (payload: IBooking) => {
         await session.commitTransaction();
         await session.endSession();
 
-        return newBooking;
+        // populate all referencing data
+        const bookingData = await Booking.findById(newBooking[0]._id).populate("user").populate("car")
+
+        return bookingData;
     } catch (error) {
         // if error caught then abroat the transaction and endd session and throw an appError
         await session.abortTransaction();
@@ -78,7 +81,7 @@ const createBookingIntoDb = async (payload: IBooking) => {
 const getMyBookingsFromDB = async (userId: string) => {
     console.log(userId)
     // get my bookings by user id
-    const bookings = await Booking.find({ user: userId });
+    const bookings = await Booking.find({ user: userId }).populate("user").populate("car");
     return bookings;
 }
 
