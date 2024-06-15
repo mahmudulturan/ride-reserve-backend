@@ -31,35 +31,40 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
 const createBookingIntoDb = async (payload: IBooking) => {
 
 
-    const isAvailable = await Car.findById(payload.car);
+    const car = await Car.findById(payload.car);
 
-    if (isAvailable?.status == "unavailable") {
+    // if car not available then throw an error
+    if (!car) {
+        throw new AppError(httpStatus.NOT_FOUND, "Car Not Found");
+    }
+
+    // if car's status is not available then throw an error
+    if (car?.status == "unavailable") {
         throw new AppError(httpStatus.NOT_FOUND, "Car is unavailable");
     }
 
-    if (!isAvailable) {
-        throw new AppError(httpStatus.NOT_FOUND, "Car Not Found");
-    }
-    
+
+    // create a session
     const session = await mongoose.startSession();
 
     try {
+        // start transaction
         session.startTransaction();
 
+        // change car status
+        car.status = "unavailable"
+        await car.save({ session });
 
-
-        isAvailable.status = "unavailable"
-
-        await isAvailable.save({ session });
-
-
+        // new booking create
         const newBooking = await Booking.create([payload], { session });
 
-
+        // commit transaction and end session
         await session.commitTransaction();
         await session.endSession();
+
         return newBooking;
     } catch (error) {
+        // if error caught then abroat the transaction and endd session and throw an appError
         await session.abortTransaction();
         await session.endSession();
         throw new AppError(httpStatus.BAD_REQUEST, "Booking Failed");
