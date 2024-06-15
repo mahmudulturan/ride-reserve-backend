@@ -3,6 +3,7 @@ import AppError from "../../errors/AppError";
 import { ICar } from "./car.interface";
 import Car from "./car.model";
 import Booking from "../booking/booking.model";
+import mongoose from "mongoose";
 
 // create car service
 const createCarIntoDb = async (payload: ICar) => {
@@ -26,7 +27,7 @@ const getAllCarsFromDb = async () => {
 const getACarFromDb = async (id: string) => {
     // get a car
     const car = await Car.findById(id);
-    
+
     return car;
 }
 
@@ -91,14 +92,33 @@ const returnCarWithDb = async (payload: { bookingId: string, endTime: string }) 
     // calculate total cost
     const totalCost = totalHours * car.pricePerHour;
 
-    // change car status
-    car.status = 'available';
-    await car.save();
+    // create a session
+    const session = await mongoose.startSession();
+    try {
+        // start transaction
+        session.startTransaction();
 
-    // update booking endTime and totalCost
-    const result = await Booking.findByIdAndUpdate(payload.bookingId, { endTime: payload.endTime, totalCost }, { new: true }).populate("car").populate('user');
+        // change car status
+        car.status = 'available';
+        await car.save({ session });
 
-    return result;
+        // update booking endTime and totalCost
+        const result = await Booking.findByIdAndUpdate(payload.bookingId, { endTime: payload.endTime, totalCost }, { new: true, session }).populate("car").populate('user');
+
+        // commit and end the session
+        await session.commitTransaction();
+        await session.endSession();
+
+        return result;
+    } catch (error) {
+        // if error caught then abroat the transaction and endd session and throw an appError
+        await session.abortTransaction();
+        await session.endSession();
+        throw new AppError(httpStatus.BAD_REQUEST, "Return Car Failed")
+    }
+
+
+
 }
 
 

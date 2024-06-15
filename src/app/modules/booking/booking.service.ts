@@ -30,7 +30,6 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
 // create booking service
 const createBookingIntoDb = async (payload: IBooking) => {
 
-    const session = await mongoose.startSession();
 
     const isAvailable = await Car.findById(payload.car);
 
@@ -41,6 +40,8 @@ const createBookingIntoDb = async (payload: IBooking) => {
     if (!isAvailable) {
         throw new AppError(httpStatus.NOT_FOUND, "Car Not Found");
     }
+    
+    const session = await mongoose.startSession();
 
     try {
         session.startTransaction();
