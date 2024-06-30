@@ -92,7 +92,7 @@ Here's a brief overview of the main API endpoints:
 - **Auth:**
 
   - `POST /api/auth/signup` - Register a new user
-  - `POST /api/auth/login` - Login a user
+  - `POST /api/auth/signin` - Login a user
 
 - **Car:**
 

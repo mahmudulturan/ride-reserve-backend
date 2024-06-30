@@ -6,10 +6,10 @@ import { authValidation } from "./auth.validation";
 const router = Router();
 
 // route for register
-router.post('/sign-up', requestValidation(authValidation.signUpValidationSchema), authController.createUser);
+router.post('/signup', requestValidation(authValidation.signUpValidationSchema), authController.createUser);
 
 
 // route for login
-router.post('/sign-in', authController.loginUser);
+router.post('/signin', authController.loginUser);
 
 export const authRoutes = router;
