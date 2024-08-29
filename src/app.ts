@@ -8,7 +8,7 @@ import configs from './app/configs';
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: [configs.local_client_url!, configs.local_client_url!] }));
+app.use(cors({ origin: [configs.local_client_url!, configs.local_client_url!, "http://localhost:5173"], }));
 
 // routes
 app.use('/api', router);

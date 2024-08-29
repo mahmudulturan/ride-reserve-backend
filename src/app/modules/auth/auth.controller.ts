@@ -35,9 +35,18 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     })
 
 
-})
+});
+
+const getUser = (req: Request, res: Response) => {
+    res.status(httpStatus.OK).send({
+        success: true,
+        message: "User retrieved successfully",
+        data: req.user
+    })
+};
 
 export const authController = {
     createUser,
-    loginUser
+    loginUser,
+    getUser
 }
