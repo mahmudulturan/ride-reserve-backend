@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import catchAsync from "../utils/catchAsync";
-import jwt, { JwtPayload, VerifyErrors } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import configs from "../configs";
 import httpStatus from "http-status";
 import AppError from "../errors/AppError";
@@ -32,7 +32,7 @@ const verifyToken = (...requiredRole: TRole[]) => {
                 throw new AppError(httpStatus.UNAUTHORIZED, "You have no access to this route");
             };
 
-            req.user = decoded as JwtPayload;
+            req.user = user;
         } catch (error) {
             throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
         }
