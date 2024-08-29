@@ -11,4 +11,6 @@ export default {
     access_token_secret: process.env.ACCESS_TOKEN_SECRET_KEY,
     refresh_token_secret: process.env.REFRESH_TOKEN_SECRET_KEY,
     node_env: process.env.NODE_ENV,
+    local_client_url: process.env.LOCAL_CLIENT_URL,
+    live_client_url: process.env.LIVE_CLIENT_URL
 }
