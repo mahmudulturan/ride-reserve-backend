@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         required: true,
         select: false
+    },
+    phone: {
+        type: String,
     }
 }, {
     timestamps: true
