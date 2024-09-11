@@ -35,10 +35,9 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Boolean,
         default: false
     },
-    status: {
-        type: String,
-        enum: ['activated', 'blocked'],
-        default: 'activated'
+    isBlocked: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

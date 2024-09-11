@@ -6,5 +6,5 @@ export interface IUser {
     address: string;
     phone?: string;
     isDeleted: boolean;
-    status: 'activated' | 'blocked';
+    isBlocked: boolean;
 }
