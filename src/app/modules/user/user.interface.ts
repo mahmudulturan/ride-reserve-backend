@@ -5,4 +5,6 @@ export interface IUser {
     role: 'user' | 'admin';
     address: string;
     phone?: string;
+    isDeleted: boolean;
+    status: 'activated' | 'blocked';
 }

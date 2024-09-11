@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema<IUser>({
     role: {
         type: String,
         enum: ['user', 'admin'],
-        required: true
+        default: 'user'
     },
     password: {
         type: String,
@@ -30,6 +30,15 @@ const userSchema = new mongoose.Schema<IUser>({
     },
     phone: {
         type: String,
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+    status: {
+        type: String,
+        enum: ['activated', 'blocked'],
+        default: 'activated'
     }
 }, {
     timestamps: true
