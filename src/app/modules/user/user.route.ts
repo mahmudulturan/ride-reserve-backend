@@ -10,4 +10,7 @@ router.get('/', verifyToken("admin"), userController.getAllUser);
 // route for update user's status
 router.patch('/change-status/:id', verifyToken("admin"), userController.updateUserStatus);
 
+// route for update user's role
+router.patch('/change-role/:id', verifyToken("admin"), userController.updateUserRole);
+
 export const userRoutes = router;

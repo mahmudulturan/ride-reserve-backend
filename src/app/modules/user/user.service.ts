@@ -14,7 +14,15 @@ const changeUserStatusOnDB = async (userId: string, isBlocked: boolean) => {
     return user;
 }
 
+// change user role service
+const changeUserRoleOnDB = async (userId: string, role: string) => {
+    // change user role
+    const user = await User.findByIdAndUpdate(userId, { role }, { new: true });
+    return user;
+}
+
 export const userService = {
     getUsersFromDB,
-    changeUserStatusOnDB
+    changeUserStatusOnDB,
+    changeUserRoleOnDB
 }
