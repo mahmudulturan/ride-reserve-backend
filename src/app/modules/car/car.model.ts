@@ -1,9 +1,29 @@
-import mongoose, { model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { ICar } from "./car.interface";
 
-const carSchema = new mongoose.Schema<ICar>({
+const carSchema = new Schema({
     name: {
         type: String,
+        required: true
+    },
+    model: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    totalPassengers: {
+        type: Number,
+        required: true
+    },
+    images: {
+        type: [String],
+        required: true
+    },
+    totalDoors: {
+        type: Number,
         required: true
     },
     description: {
@@ -18,13 +38,20 @@ const carSchema = new mongoose.Schema<ICar>({
         type: Boolean,
         required: true
     },
+    carType: {
+        type: String,
+        required: true
+    },
     status: {
         type: String,
         enum: ['available', 'unavailable'],
         default: 'available',
-        required: true
     },
     features: {
+        type: [String],
+        required: true
+    },
+    additionalFeatures: {
         type: [String],
         required: true
     },
@@ -36,10 +63,6 @@ const carSchema = new mongoose.Schema<ICar>({
         type: Boolean,
         default: false
     }
-}
-    , { timestamps: true });
+}, { timestamps: true });
 
-
-const Car = model<ICar>("Car", carSchema);
-
-export default Car;
+export default mongoose.model<ICar>("Car", carSchema);
