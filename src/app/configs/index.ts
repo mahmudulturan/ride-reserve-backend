@@ -14,5 +14,7 @@ export default {
     local_client_url: process.env.LOCAL_CLIENT_URL,
     live_client_url: process.env.LIVE_CLIENT_URL,
     sslcommerz_store_id: process.env.SSLCOMMERZ_STORE_ID,
-    sslcommerz_store_passwd: process.env.SSLCOMMERZ_STORE_PASSWD
+    sslcommerz_store_passwd: process.env.SSLCOMMERZ_STORE_PASSWD,
+    local_server_url: process.env.LOCAL_SERVER_URL,
+    live_server_url: process.env.LIVE_SERVER_URL
 }

@@ -6,8 +6,8 @@ const createPaymentIntoDB = async (payload: IPayment) => {
     return payment;
 };
 
-const updatePaymentStatus = async (id: string, { status, transactionId }: { status: string, transactionId: string }) => {
-    const payment = await Payment.findByIdAndUpdate(id, { status: status === "true" ? "paid" : "failed", transactionId }, { new: true });
+const updatePaymentStatus = async (status: string, transactionId: string) => {
+    const payment = await Payment.findOneAndUpdate({ transactionId }, { status: status === "paid" ? "paid" : "failed" }, { new: true });
     return payment;
 }
 

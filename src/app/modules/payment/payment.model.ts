@@ -26,7 +26,8 @@ const modelSchema = new mongoose.Schema<IPayment>({
         default: 'pending'
     },
     transactionId: {
-        type: String
+        type: String,
+        required: true
     }
 });
 

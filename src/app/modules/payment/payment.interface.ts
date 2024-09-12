@@ -6,5 +6,5 @@ export interface IPayment {
     booking: Types.ObjectId;
     user: Types.ObjectId;
     status: 'pending' | 'paid' | 'failed';
-    transactionId?: string
+    transactionId: string
 }

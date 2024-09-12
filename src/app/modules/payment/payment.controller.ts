@@ -1,31 +1,33 @@
 import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
-// import { paymentService } from "./payment.service";
+import { paymentService } from "./payment.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import configs from "../../configs";
+import { paymentRoutes } from "./payment.route";
 
 const SSLCommerzPayment = require('sslcommerz-lts')
 const store_id = configs.sslcommerz_store_id
 const store_passwd = configs.sslcommerz_store_passwd
 const is_live = false
-const redirect_url = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
+const redirect_url = configs.node_env === "production" ? configs.live_server_url : configs.local_server_url;
 
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
 
     const reqData = req.body;
-    // create payment
-    // const result = await paymentService.createPaymentIntoDB(req.body);
-
     const transactionId = Math.floor(Math.random() * 10000000000);
+
+    // create payment
+    await paymentService.createPaymentIntoDB({ ...reqData, transactionId });
+    let status = "pending";
 
     const data = {
         total_amount: reqData.amount,
         currency: reqData.currency,
         tran_id: transactionId,
-        success_url: `${redirect_url}/payment-success`,
-        fail_url: `${redirect_url}/payment-fail`,
+        success_url: `${redirect_url}/api/payments/payment-response/${transactionId}`,
+        fail_url: `${redirect_url}/api/payments/payment-response/${transactionId}`,
         cancel_url: `${redirect_url}/payment-cancel`,
         ipn_url: `${redirect_url}/ipn`,
         shipping_method: 'Courier',
@@ -53,6 +55,11 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
     sslcz.init(data).then((apiResponse: any) => {
         let GatewayPageURL = apiResponse.GatewayPageURL;
+        if (apiResponse.status == 'SUCCESS') {
+            status = 'paid'
+        } else {
+            status = 'failed'
+        }
         if (GatewayPageURL) {
             sendResponse(res,
                 {
@@ -72,7 +79,26 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
                     data: {}
                 });
         }
+    }).catch((error: any) => {
+        sendResponse(res,
+            {
+                status: httpStatus.BAD_REQUEST,
+                success: false,
+                message: "Payment url not created",
+                data: {}
+            });
     });
+
+    paymentRoutes.post('/payment-response/:id', async (req: Request, res: Response) => {
+        const updateResult = await paymentService.updatePaymentStatus(status, req.params.id);
+        const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
+        if (updateResult?.status === 'paid') {
+            res.redirect(`${successRedirect}/payment-success`);
+        } else {
+            res.redirect(`${successRedirect}/payment-failed`);
+        }
+    });
+
 });
 
 
