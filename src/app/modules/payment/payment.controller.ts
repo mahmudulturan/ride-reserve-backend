@@ -22,12 +22,13 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
     await paymentService.createPaymentIntoDB({ ...reqData, transactionId });
     let status = "pending";
 
+    // data for payment
     const data = {
         total_amount: reqData.amount,
         currency: reqData.currency,
         tran_id: transactionId,
-        success_url: `${redirect_url}/api/payments/payment-response/${transactionId}`,
-        fail_url: `${redirect_url}/api/payments/payment-response/${transactionId}`,
+        success_url: `${redirect_url}/api/payments/payment-success/${transactionId}`,
+        fail_url: `${redirect_url}/api/payments/payment-failed/${transactionId}`,
         cancel_url: `${redirect_url}/payment-cancel`,
         ipn_url: `${redirect_url}/ipn`,
         shipping_method: 'Courier',
@@ -52,14 +53,14 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
         ship_postcode: 1000,
         ship_country: 'Bangladesh',
     };
+
+    // init sslcommerz
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
     sslcz.init(data).then((apiResponse: any) => {
         let GatewayPageURL = apiResponse.GatewayPageURL;
-        if (apiResponse.status == 'SUCCESS') {
-            status = 'paid'
-        } else {
-            status = 'failed'
-        }
+
+        status = apiResponse.status == 'SUCCESS' ? 'paid' : 'failed'
+
         if (GatewayPageURL) {
             sendResponse(res,
                 {
@@ -79,7 +80,7 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
                     data: {}
                 });
         }
-    }).catch((error: any) => {
+    }).catch((_error: any) => {
         sendResponse(res,
             {
                 status: httpStatus.BAD_REQUEST,
@@ -89,13 +90,25 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
             });
     });
 
-    paymentRoutes.post('/payment-response/:id', async (req: Request, res: Response) => {
+    // route for payment success
+    paymentRoutes.post('/payment-success/:id', async (req: Request, res: Response) => {
         const updateResult = await paymentService.updatePaymentStatus(status, req.params.id);
         const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
         if (updateResult?.status === 'paid') {
-            res.redirect(`${successRedirect}/payment-success`);
+            res.redirect(`${successRedirect}/payment-success/${req.params.id}`);
         } else {
-            res.redirect(`${successRedirect}/payment-failed`);
+            res.redirect(`${successRedirect}/payment-failed/${req.params.id}`);
+        }
+    });
+
+    // route for payment failed
+    paymentRoutes.post('/payment-failed/:id', async (req: Request, res: Response) => {
+        const updateResult = await paymentService.updatePaymentStatus("failed", req.params.id);
+        const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
+        if (updateResult?.status === 'failed') {
+            res.redirect(`${successRedirect}/payment-failed/${req.params.id}`);
+        } else {
+            res.redirect(`${successRedirect}/payment-success/${req.params.id}`);
         }
     });
 
