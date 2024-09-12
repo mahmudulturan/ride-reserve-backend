@@ -7,4 +7,5 @@ export interface IBooking {
     startTime: string;
     endTime: string;
     totalCost: number;
+    status: 'pending' | 'approved' | 'cancelled' | 'completed';
 }

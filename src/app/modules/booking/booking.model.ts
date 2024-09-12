@@ -27,6 +27,11 @@ const bookingSchema = new mongoose.Schema<IBooking>({
     totalCost: {
         type: Number,
         default: 0
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'approved', 'cancelled', 'completed'],
+        default: 'pending'
     }
 })
 
