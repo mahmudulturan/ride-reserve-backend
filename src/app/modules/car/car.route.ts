@@ -14,8 +14,12 @@ router.post('/', verifyToken("admin"),
 // router for get all cars
 router.get('/', verifyToken("user", "admin"), carController.getAllCars);
 
+// router for get highest price car
+router.get('/highest-price-car', carController.getHighestPriceCar);
+
 // router for get a car
 router.get('/:id', verifyToken("user", "admin"), carController.getACar);
+
 
 
 // router for return a car

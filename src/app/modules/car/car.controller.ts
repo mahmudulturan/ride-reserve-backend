@@ -25,7 +25,7 @@ const createCar = catchAsync(async (req: Request, res: Response) => {
 const getAllCars = catchAsync(async (req: Request, res: Response) => {
     // get all cars
     const data = await carService.getAllCarsFromDb();
-    
+
     // if no data found then send error response
     if (data.length === 0) {
         // send response
@@ -72,6 +72,22 @@ const getACar = catchAsync(async (req: Request, res: Response) => {
             status: httpStatus.OK,
             success: true,
             message: "A Car retrieved successfully",
+            data
+        })
+})
+
+
+// controller for get highest price car
+const getHighestPriceCar = catchAsync(async (req: Request, res: Response) => {
+    // get highest price car
+    const data = await carService.getHighestPriceCarFromDb();
+
+    // send response
+    sendResponse(res,
+        {
+            status: httpStatus.OK,
+            success: true,
+            message: "Highest Price Car retrieved successfully",
             data
         })
 })
@@ -123,5 +139,6 @@ export const carController = {
     getACar,
     updateACar,
     deleteACar,
-    returnCar
+    returnCar,
+    getHighestPriceCar
 };

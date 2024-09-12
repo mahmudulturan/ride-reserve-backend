@@ -32,6 +32,15 @@ const getACarFromDb = async (id: string) => {
 }
 
 
+// get price range of car
+const getHighestPriceCarFromDb = async () => {
+    const highestPriceCar = await Car.findOne({ isDeleted: false })
+        .sort({ pricePerHour: -1 })
+        .limit(1).select("pricePerHour");
+
+    return highestPriceCar?.pricePerHour || 0;
+};
+
 // update a car by _id service
 const updateACarFromDb = async (id: string, payload: ICar) => {
 
@@ -129,5 +138,6 @@ export const carService = {
     getACarFromDb,
     updateACarFromDb,
     deleteACarFromDb,
-    returnCarWithDb
+    returnCarWithDb,
+    getHighestPriceCarFromDb
 }
