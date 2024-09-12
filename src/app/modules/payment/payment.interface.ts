@@ -5,4 +5,6 @@ export interface IPayment {
     currency: string;
     booking: Types.ObjectId;
     user: Types.ObjectId;
+    status: 'pending' | 'paid' | 'failed';
+    transactionId?: string
 }

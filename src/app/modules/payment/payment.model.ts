@@ -19,6 +19,14 @@ const modelSchema = new mongoose.Schema<IPayment>({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'paid', 'failed'],
+        default: 'pending'
+    },
+    transactionId: {
+        type: String
     }
 });
 
