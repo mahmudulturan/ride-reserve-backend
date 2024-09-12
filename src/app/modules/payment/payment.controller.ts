@@ -95,9 +95,9 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
         const updateResult = await paymentService.updatePaymentStatus(status, req.params.id);
         const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
         if (updateResult?.status === 'paid') {
-            res.redirect(`${successRedirect}/payment-success/${req.params.id}`);
+            res.redirect(`${successRedirect}/dashboard/user/payment-success/${req.params.id}`);
         } else {
-            res.redirect(`${successRedirect}/payment-failed/${req.params.id}`);
+            res.redirect(`${successRedirect}/dashboard/user/payment-failed/${req.params.id}`);
         }
     });
 
@@ -106,9 +106,9 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
         const updateResult = await paymentService.updatePaymentStatus("failed", req.params.id);
         const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
         if (updateResult?.status === 'failed') {
-            res.redirect(`${successRedirect}/payment-failed/${req.params.id}`);
+            res.redirect(`${successRedirect}/dashboard/user/payment-failed/${req.params.id}`);
         } else {
-            res.redirect(`${successRedirect}/payment-success/${req.params.id}`);
+            res.redirect(`${successRedirect}/dashboard/user/payment-success/${req.params.id}`);
         }
     });
 
