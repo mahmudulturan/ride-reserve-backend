@@ -12,5 +12,7 @@ export default {
     refresh_token_secret: process.env.REFRESH_TOKEN_SECRET_KEY,
     node_env: process.env.NODE_ENV,
     local_client_url: process.env.LOCAL_CLIENT_URL,
-    live_client_url: process.env.LIVE_CLIENT_URL
+    live_client_url: process.env.LIVE_CLIENT_URL,
+    sslcommerz_store_id: process.env.SSLCOMMERZ_STORE_ID,
+    sslcommerz_store_passwd: process.env.SSLCOMMERZ_STORE_PASSWD
 }

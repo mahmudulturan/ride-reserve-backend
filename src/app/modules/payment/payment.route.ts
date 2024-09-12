@@ -5,7 +5,7 @@ import { paymentValidation } from "./payment.validation";
 
 const router = Router();
 
-router.post('/', requestValidation(paymentValidation.createPaymentValidationSchema), paymentController.createPayment)
+router.post('/', requestValidation(paymentValidation.createPaymentValidationSchema), paymentController.createPayment);
 
 
 export const paymentRoutes = router;
