@@ -36,6 +36,7 @@ const getAllCars = catchAsync(async (req: Request, res: Response) => {
                 message: "No Data Found",
                 data
             })
+        return;
     }
 
     // send response
@@ -64,6 +65,7 @@ const getACar = catchAsync(async (req: Request, res: Response) => {
                 message: "No Data Found",
                 data
             })
+        return;
     }
 
     // send response
