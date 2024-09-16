@@ -20,6 +20,8 @@ const getAllBookings = catchAsync(async (req: Request, res: Response) => {
                 message: "No Data Found",
                 data
             })
+
+        return;
     }
 
 
@@ -58,6 +60,7 @@ const getMyBookings = catchAsync(async (req: Request, res: Response) => {
                 message: "No Data Found",
                 data
             })
+        return;
     }
 
 
