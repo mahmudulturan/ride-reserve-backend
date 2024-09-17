@@ -4,6 +4,7 @@ import { ICar } from "./car.interface";
 import Car from "./car.model";
 import Booking from "../booking/booking.model";
 import mongoose from "mongoose";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 // create car service
 const createCarIntoDb = async (payload: ICar) => {
@@ -15,10 +16,12 @@ const createCarIntoDb = async (payload: ICar) => {
 }
 
 // get all cars service
-const getAllCarsFromDb = async () => {
+const getAllCarsFromDb = async (query: Record<string, any>) => {
     // get all cars
-    const cars = await Car.find({ isDeleted: false });
 
+    const carsQuery = new QueryBuilder(Car.find({ isDeleted: false }), query).search(["name"]).filter().sort().paginate()
+
+    const cars = await carsQuery.modelQuery;
     return cars;
 }
 

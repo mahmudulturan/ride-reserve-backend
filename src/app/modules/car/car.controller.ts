@@ -24,7 +24,7 @@ const createCar = catchAsync(async (req: Request, res: Response) => {
 // controller for get all cars
 const getAllCars = catchAsync(async (req: Request, res: Response) => {
     // get all cars
-    const data = await carService.getAllCarsFromDb();
+    const data = await carService.getAllCarsFromDb(req.query);
 
     // if no data found then send error response
     if (data.length === 0) {
