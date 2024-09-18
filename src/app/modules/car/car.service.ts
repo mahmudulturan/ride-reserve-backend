@@ -18,8 +18,8 @@ const createCarIntoDb = async (payload: ICar) => {
 // get all cars service
 const getAllCarsFromDb = async (query: Record<string, any>) => {
     // get all cars
-
-    const carsQuery = new QueryBuilder(Car.find({ isDeleted: false }), query).search(["name"]).filter().sort().paginate()
+    const typeFilter = query.carType ? { carType: query.carType } : {};
+    const carsQuery = new QueryBuilder(Car.find({ isDeleted: false, ...typeFilter }), query).search(["name", "carType", "features", "additionalFeatures"]).filter().sort().paginate()
 
     const cars = await carsQuery.modelQuery;
     return cars;
