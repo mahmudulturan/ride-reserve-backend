@@ -79,17 +79,17 @@ const getACar = catchAsync(async (req: Request, res: Response) => {
 })
 
 
-// controller for get highest price car
-const getHighestPriceCar = catchAsync(async (req: Request, res: Response) => {
-    // get highest price car
-    const data = await carService.getHighestPriceCarFromDb();
+// controller for get price range
+const getPriceRange = catchAsync(async (req: Request, res: Response) => {
+    // get price range
+    const data = await carService.getPriceRangeFromDB();
 
     // send response
     sendResponse(res,
         {
             status: httpStatus.OK,
             success: true,
-            message: "Highest Price Car retrieved successfully",
+            message: "Min Max Price Car retrieved successfully",
             data
         })
 })
@@ -142,5 +142,5 @@ export const carController = {
     updateACar,
     deleteACar,
     returnCar,
-    getHighestPriceCar
+    getPriceRange
 };
