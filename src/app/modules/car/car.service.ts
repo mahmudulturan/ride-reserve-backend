@@ -22,7 +22,10 @@ const getAllCarsFromDb = async (query: Record<string, any>) => {
     const carsQuery = new QueryBuilder(Car.find({ isDeleted: false, ...typeFilter }), query).search(["name", "carType", "features", "additionalFeatures"]).filter().sort().paginate()
 
     const cars = await carsQuery.modelQuery;
-    return cars;
+
+    const carsCount = await Car.countDocuments(query);
+
+    return { cars, carsCount };
 }
 
 
