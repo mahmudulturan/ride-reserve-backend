@@ -8,4 +8,8 @@ export interface IBooking {
     endTime: string;
     totalCost: number;
     status: 'pending' | 'approved' | 'cancelled' | 'completed';
+    nidOrPassport: string;
+    drivingLicense: string;
+    paymentMethod: string;
+    accountNo: string;
 }

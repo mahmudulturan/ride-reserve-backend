@@ -32,6 +32,22 @@ const bookingSchema = new mongoose.Schema<IBooking>({
         type: String,
         enum: ['pending', 'approved', 'cancelled', 'completed'],
         default: 'pending'
+    },
+    nidOrPassport: {
+        type: String,
+        required: true
+    },
+    drivingLicense: {
+        type: String,
+        required: true
+    },
+    paymentMethod: {
+        type: String,
+        required: true
+    },
+    accountNo: {
+        type: String,
+        required: true
     }
 })
 
