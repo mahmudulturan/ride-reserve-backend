@@ -48,8 +48,7 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
 const getMyBookings = catchAsync(async (req: Request, res: Response) => {
 
     // response data
-    const data = await bookingService.getMyBookingsFromDB(req.user.userId);
-
+    const data = await bookingService.getMyBookingsFromDB(req.user._id);
     // if no data found then send error response
     if (data.length === 0) {
         // send response
