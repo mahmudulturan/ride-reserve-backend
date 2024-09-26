@@ -1,3 +1,4 @@
+import { IUser } from "./user.interface";
 import User from "./user.model";
 
 // get all users service
@@ -21,8 +22,17 @@ const changeUserRoleOnDB = async (userId: string, role: string) => {
     return user;
 }
 
+
+// update user information service
+const updateUserInformationOnDB = async (userId: string, payload: IUser) => {
+    // update user information
+    const user = await User.findByIdAndUpdate(userId, payload, { new: true });
+    return user;
+}
+
 export const userService = {
     getUsersFromDB,
     changeUserStatusOnDB,
-    changeUserRoleOnDB
+    changeUserRoleOnDB,
+    updateUserInformationOnDB
 }

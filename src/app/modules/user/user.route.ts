@@ -13,4 +13,7 @@ router.patch('/change-status/:id', verifyToken("admin"), userController.updateUs
 // route for update user's role
 router.patch('/change-role/:id', verifyToken("admin"), userController.updateUserRole);
 
+// route for update user information
+router.put('/:id', verifyToken("admin", "user"), userController.updateUserInformation);
+
 export const userRoutes = router;
