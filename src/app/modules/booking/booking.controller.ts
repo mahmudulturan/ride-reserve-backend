@@ -28,6 +28,12 @@ const getAllBookings = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, { success: true, status: httpStatus.OK, message: "Bookings retrieved successfully", data })
 })
 
+// controller for get my bookings
+const getMyBookingsStats = catchAsync(async (req: Request, res: Response) => {
+    const data = await bookingService.getMyBookingsStatsFromDb(req.user._id);
+    sendResponse(res, { success: true, status: httpStatus.OK, message: "My Bookings retrieved successfully", data });
+})
+
 
 // controller for create booking
 const createBooking = catchAsync(async (req: Request, res: Response) => {
@@ -74,4 +80,5 @@ export const bookingController = {
     createBooking,
     getAllBookings,
     getMyBookings,
+    getMyBookingsStats
 }

@@ -27,6 +27,21 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
     return bookings;
 }
 
+// get user's booking stats (totalbookings, pendingbookings, completedbookings, cancelledbookings)
+const getMyBookingsStatsFromDb = async (userId: string) => {
+    const totalBookings = await Booking.find({ user: userId });
+    const completedBookings = totalBookings.filter((booking) => booking.status === "completed");
+    const pendingBookings = totalBookings.filter((booking) => booking.status === "pending");
+    const cancelledBookings = totalBookings.filter((booking) => booking.status === "cancelled");
+
+    return {
+        totalBookings: totalBookings.length,
+        completedBookings: completedBookings.length,
+        pendingBookings: pendingBookings.length,
+        cancelledBookings: cancelledBookings.length
+    }
+}
+
 // create booking service
 const createBookingIntoDb = async (payload: IBooking) => {
 
@@ -90,5 +105,6 @@ const getMyBookingsFromDB = async (userId: string) => {
 export const bookingService = {
     createBookingIntoDb,
     getBookingsFromDb,
-    getMyBookingsFromDB
+    getMyBookingsFromDB,
+    getMyBookingsStatsFromDb
 }
