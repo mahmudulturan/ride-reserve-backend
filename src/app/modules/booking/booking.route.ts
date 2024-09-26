@@ -18,6 +18,8 @@ router.get('/my-bookings-stats', verifyToken("user"), bookingController.getMyBoo
 // routes for create a booking
 router.post('/', verifyToken("user"), requestValidation(bookingValidation.createBookingValidationSchema), bookingController.createBooking);
 
+// routes for update a booking
+router.put('/:id', verifyToken("user"), requestValidation(bookingValidation.updateBookingValidationSchema), bookingController.updateBooking);
 
 
 export const bookingRoutes = router;

@@ -103,10 +103,19 @@ const getMyBookingsFromDB = async (userId: string) => {
 }
 
 
+// update a booking service 
+const updateABookingOnDb = async (id: string, payload: IBooking) => {
+    // update a booking
+    const booking = await Booking.findByIdAndUpdate(id, payload, { new: true });
+    return booking;
+}
+
+
 
 export const bookingService = {
     createBookingIntoDb,
     getBookingsFromDb,
     getMyBookingsFromDB,
-    getMyBookingsStatsFromDb
+    getMyBookingsStatsFromDb,
+    updateABookingOnDb,
 }
