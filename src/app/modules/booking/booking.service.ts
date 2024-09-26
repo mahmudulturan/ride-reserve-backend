@@ -33,12 +33,14 @@ const getMyBookingsStatsFromDb = async (userId: string) => {
     const completedBookings = totalBookings.filter((booking) => booking.status === "completed");
     const pendingBookings = totalBookings.filter((booking) => booking.status === "pending");
     const cancelledBookings = totalBookings.filter((booking) => booking.status === "cancelled");
+    const approvedBookings = totalBookings.filter((booking) => booking.status === "approved");
 
     return {
         totalBookings: totalBookings.length,
         completedBookings: completedBookings.length,
         pendingBookings: pendingBookings.length,
-        cancelledBookings: cancelledBookings.length
+        cancelledBookings: cancelledBookings.length,
+        approvedBookings: approvedBookings.length
     }
 }
 
