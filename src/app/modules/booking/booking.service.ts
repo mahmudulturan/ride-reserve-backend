@@ -110,6 +110,13 @@ const updateABookingOnDb = async (id: string, payload: IBooking) => {
 }
 
 
+// cancel a booking service
+const cancelABookingOnDb = async (id: string) => {
+    // update a booking
+    const booking = await Booking.findByIdAndUpdate(id, { status: "cancelled" }, { new: true });
+    return booking;
+}
+
 
 export const bookingService = {
     createBookingIntoDb,
@@ -117,4 +124,5 @@ export const bookingService = {
     getMyBookingsFromDB,
     getMyBookingsStatsFromDb,
     updateABookingOnDb,
+    cancelABookingOnDb
 }

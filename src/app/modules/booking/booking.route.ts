@@ -21,5 +21,8 @@ router.post('/', verifyToken("user"), requestValidation(bookingValidation.create
 // routes for update a booking
 router.put('/:id', verifyToken("user"), requestValidation(bookingValidation.updateBookingValidationSchema), bookingController.updateBooking);
 
+// routes for cancel a booking
+router.patch('/cancel/:id', verifyToken("user"), bookingController.cancelABooking);
+
 
 export const bookingRoutes = router;
