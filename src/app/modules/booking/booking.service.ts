@@ -100,11 +100,20 @@ const cancelABookingOnDb = async (id: string) => {
     return booking;
 }
 
+// update booking status
+const updateBookingStatusOnDb = async (id: string, status: string) => {
+    // update a booking status
+    const booking = await Booking.findByIdAndUpdate(id, { status: status }, { new: true });
+    return booking;
+}
+
+
 
 export const bookingService = {
     createBookingIntoDb,
     getBookingsFromDb,
     getMyBookingsFromDB,
     updateABookingOnDb,
-    cancelABookingOnDb
+    cancelABookingOnDb,
+    updateBookingStatusOnDb
 }
