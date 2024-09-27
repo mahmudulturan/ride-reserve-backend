@@ -2,6 +2,7 @@ import Booking from "../booking/booking.model";
 import Car from "../car/car.model";
 import Payment from "../payment/payment.model";
 
+// Get dashboard stats
 const getDashboardStatsFromDB = async () => {
     const totalBookings = await Booking.find({});
     const totalCars = await Car.find({ isDeleted: false });
@@ -48,6 +49,24 @@ const getDashboardStatsFromDB = async () => {
     };
 }
 
+// Get user dashboard stats
+const getUserDashboardStatsFromDB = async (userId: string) => {
+    const totalBookings = await Booking.find({ user: userId });
+    const completedBookings = totalBookings.filter((booking) => booking.status === "completed");
+    const pendingBookings = totalBookings.filter((booking) => booking.status === "pending");
+    const cancelledBookings = totalBookings.filter((booking) => booking.status === "cancelled");
+    const approvedBookings = totalBookings.filter((booking) => booking.status === "approved");
+
+    return {
+        total: totalBookings.length,
+        completed: completedBookings.length,
+        pending: pendingBookings.length,
+        cancelled: cancelledBookings.length,
+        approved: approvedBookings.length
+    }
+}
+
 export const dashboardService = {
-    getDashboardStatsFromDB
+    getDashboardStatsFromDB,
+    getUserDashboardStatsFromDB
 }

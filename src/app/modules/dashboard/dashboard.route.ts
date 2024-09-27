@@ -7,4 +7,8 @@ const router = Router();
 
 router.get('/admin-stats', verifyToken("admin"), dashboardController.getDashboardStats);
 
+
+router.get('/user-stats', verifyToken("user"), dashboardController.getUserDashboardStats);
+
+
 export const dashboardRoutes = router;
