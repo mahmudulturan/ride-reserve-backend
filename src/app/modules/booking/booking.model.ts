@@ -49,6 +49,8 @@ const bookingSchema = new mongoose.Schema<IBooking>({
         type: String,
         required: true
     }
+}, {
+    timestamps: true
 })
 
 

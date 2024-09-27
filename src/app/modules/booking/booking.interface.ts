@@ -12,4 +12,5 @@ export interface IBooking {
     drivingLicense: string;
     paymentMethod: string;
     accountNo: string;
+    createdAt: Date;
 }

@@ -5,7 +5,7 @@ import httpStatus from "http-status";
 import sendResponse from "../../utils/sendResponse";
 
 const getDashboardStats = catchAsync(async (req: Request, res: Response) => {
-    const data = dashboardService.getDashboardStatsFromDB();
+    const data = await dashboardService.getDashboardStatsFromDB();
 
     sendResponse(res, { success: true, status: httpStatus.OK, message: "Dashboard stats retrieved successfully", data })
 })
