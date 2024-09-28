@@ -8,9 +8,9 @@ import mongoose from "mongoose";
 
 // get all booking service
 const getBookingsFromDb = async (query: Record<string, any>) => {
-    const queryObject: { date?: string, car?: string } = {};
+    const queryObject: { date?: string, car?: string, status?: string } = {};
 
-    const { date, carId } = query;
+    const { date, carId, status } = query;
 
     // add query in queryObject
     if (date) {
@@ -20,6 +20,10 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
     // add query in queryObject
     if (carId) {
         queryObject['car'] = carId;
+    };
+
+    if (status) {
+        queryObject['status'] = status;
     };
 
     // get all bookings by queyObject
@@ -78,9 +82,15 @@ const createBookingIntoDb = async (payload: IBooking) => {
 
 
 // get my bookings service
-const getMyBookingsFromDB = async (userId: string) => {
+const getMyBookingsFromDB = async (userId: string, query: Record<string, any>) => {
+    const queryObject: { status?: string } = {};
+
+    if (query.status) {
+        queryObject['status'] = query.status;
+    };
+
     // get my bookings by user id
-    const bookings = await Booking.find({ user: userId }).populate("user").populate("car");
+    const bookings = await Booking.find({ user: userId, ...queryObject }).populate("user").populate("car");
     return bookings;
 }
 
