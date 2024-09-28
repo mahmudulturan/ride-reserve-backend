@@ -123,7 +123,7 @@ const returnCarWithDb = async (payload: { bookingId: string, endTime: string }) 
         await car.save({ session });
 
         // update booking endTime and totalCost
-        const result = await Booking.findByIdAndUpdate(payload.bookingId, { endTime: payload.endTime, totalCost }, { new: true, session }).populate("car").populate('user');
+        const result = await Booking.findByIdAndUpdate(payload.bookingId, { endTime: payload.endTime, totalCost, status: 'completed' }, { new: true, session }).populate("car").populate('user');
 
         // commit and end the session
         await session.commitTransaction();
