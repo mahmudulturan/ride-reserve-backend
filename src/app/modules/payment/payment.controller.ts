@@ -10,7 +10,7 @@ const SSLCommerzPayment = require('sslcommerz-lts')
 const store_id = configs.sslcommerz_store_id
 const store_passwd = configs.sslcommerz_store_passwd
 const is_live = false
-const redirect_url = configs.node_env === "production" ? configs.live_server_url : configs.local_server_url;
+const redirect_url = "https://ride-reserve-backend-2.vercel.app";
 
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
@@ -93,7 +93,7 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
     // route for payment success
     paymentRoutes.post('/payment-success/:id', async (req: Request, res: Response) => {
         const updateResult = await paymentService.updatePaymentStatus(status, req.params.id);
-        const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
+        const successRedirect = "https://ride-reserve-frontend.vercel.app";
         if (updateResult?.status === 'paid') {
             res.redirect(`${successRedirect}/dashboard/user/payment-success/${req.params.id}`);
         } else {
@@ -104,7 +104,7 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
     // route for payment failed
     paymentRoutes.post('/payment-failed/:id', async (req: Request, res: Response) => {
         const updateResult = await paymentService.updatePaymentStatus("failed", req.params.id);
-        const successRedirect = configs.node_env === "production" ? configs.live_client_url : configs.local_client_url;
+        const successRedirect = "https://ride-reserve-frontend.vercel.app";
         if (updateResult?.status === 'failed') {
             res.redirect(`${successRedirect}/dashboard/user/payment-failed/${req.params.id}`);
         } else {
