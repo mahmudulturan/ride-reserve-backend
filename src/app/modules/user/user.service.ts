@@ -1,11 +1,16 @@
+import QueryBuilder from "../../builder/QueryBuilder";
 import { IUser } from "./user.interface";
 import User from "./user.model";
 
 // get all users service
 const getUsersFromDB = async () => {
     // get all users
-    const users = await User.find();
-    return users;
+    const usersQuery = new QueryBuilder(User.find(), {}).sort().paginate();
+
+    const users = await usersQuery.modelQuery;
+    const usersCount = await new QueryBuilder(User.find(), {}).getCount();
+    
+    return { users, usersCount };
 }
 
 // change user isBlocked status service
