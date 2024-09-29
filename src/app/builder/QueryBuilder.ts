@@ -68,6 +68,11 @@ class QueryBuilder<T> {
 
         return this;
     }
+
+    async getCount(): Promise<number> {
+        const count = await this.modelQuery.countDocuments();
+        return count;
+    }
 }
 
 export default QueryBuilder;
