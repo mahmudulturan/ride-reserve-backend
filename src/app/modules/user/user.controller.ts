@@ -9,7 +9,7 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
     // get all users
     const data = await userService.getUsersFromDB();
 
-    if (data.length === 0) {
+    if (data.users.length === 0) {
         // send response
         sendResponse(res,
             {
