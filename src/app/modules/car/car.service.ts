@@ -110,7 +110,7 @@ const returnCarWithDb = async (payload: { bookingId: string, endTime: string }) 
     const totalHours = Number(payload.endTime.split(":")[0]) - Number(booking.startTime.split(":")[0]);
 
     // calculate total cost
-    const totalCost = totalHours * car.pricePerHour;
+    const totalCost = (totalHours ? totalHours : 1) * car.pricePerHour;
 
     // create a session
     const session = await mongoose.startSession();
@@ -136,9 +136,6 @@ const returnCarWithDb = async (payload: { bookingId: string, endTime: string }) 
         await session.endSession();
         throw new AppError(httpStatus.BAD_REQUEST, "Return Car Failed")
     }
-
-
-
 }
 
 
