@@ -4,6 +4,7 @@ import Car from "../car/car.model";
 import { IBooking } from "./booking.interface";
 import Booking from "./booking.model";
 import mongoose from "mongoose";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 
 // get all booking service
@@ -27,8 +28,12 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
     };
 
     // get all bookings by queyObject
-    const bookings = await Booking.find(queryObject).populate("user").populate("car");
-    return bookings;
+    const bookingsQuery = new QueryBuilder(Booking.find({ ...queryObject }), query).sort().paginate();
+    const bookings = await bookingsQuery.modelQuery;
+
+    const bookingsCount = await new QueryBuilder(Booking.find({ ...queryObject }), query).getCount();
+    
+    return { bookings, bookingsCount };
 }
 
 // create booking service
@@ -90,8 +95,13 @@ const getMyBookingsFromDB = async (userId: string, query: Record<string, any>) =
     };
 
     // get my bookings by user id
-    const bookings = await Booking.find({ user: userId, ...queryObject }).populate("user").populate("car");
-    return bookings;
+    const bookingsQuery = new QueryBuilder(Booking.find({ user: userId, ...queryObject }), query).sort().paginate();
+
+    const bookings = await bookingsQuery.modelQuery;
+
+    const bookingsCount = await new QueryBuilder(Booking.find({ user: userId, ...queryObject }), query).getCount();
+
+    return { bookings, bookingsCount };
 }
 
 
