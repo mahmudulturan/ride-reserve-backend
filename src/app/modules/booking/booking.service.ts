@@ -29,7 +29,7 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
 
     // get all bookings by queyObject
     const bookingsQuery = new QueryBuilder(Booking.find({ ...queryObject }), query).sort().paginate();
-    const bookings = await bookingsQuery.modelQuery;
+    const bookings = await bookingsQuery.modelQuery.populate('car').populate('user');
 
     const bookingsCount = await new QueryBuilder(Booking.find({ ...queryObject }), query).getCount();
     
