@@ -13,4 +13,5 @@ export interface IBooking {
     paymentMethod: string;
     accountNo: string;
     createdAt: Date;
+    paymentStatus: 'paid' | 'unpaid';
 }

@@ -48,6 +48,11 @@ const bookingSchema = new mongoose.Schema<IBooking>({
     accountNo: {
         type: String,
         required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['paid', 'unpaid'],
+        default: 'unpaid'
     }
 }, {
     timestamps: true
