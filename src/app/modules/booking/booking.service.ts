@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 
 // get all booking service
 const getBookingsFromDb = async (query: Record<string, any>) => {
-    const queryObject: { date?: string, car?: string, status?: string } = {};
+    const queryObject: { date?: string, car?: string, status?: { $in: string[] } } = {};
 
     const { date, carId, status } = query;
 
@@ -23,7 +23,7 @@ const getBookingsFromDb = async (query: Record<string, any>) => {
     };
 
     if (status) {
-        queryObject['status'] = status;
+        queryObject['status'] = { $in: status.split(",") };
     };
 
     // get all bookings by queyObject
