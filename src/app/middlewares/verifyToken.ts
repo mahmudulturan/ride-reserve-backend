@@ -32,6 +32,10 @@ const verifyToken = (...requiredRole: TRole[]) => {
                 throw new AppError(httpStatus.UNAUTHORIZED, "You have no access to this route");
             };
 
+            if (user.isBlocked) {
+                throw new AppError(httpStatus.UNAUTHORIZED, "Your account has been blocked");
+            }
+
             req.user = user;
         } catch (error) {
             throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized Access");
